@@ -323,6 +323,7 @@ Ph2XBAR <- function(
   X2,
   X1,
   cc = NULL,
+  cc.option = c('EPC', 'CUC'),
   ubCons.option = TRUE,
   plot.option = TRUE,
   CUC.ARL0 = 370,
@@ -347,7 +348,6 @@ Ph2XBAR <- function(
   }
 
   m2 <- dim(X2)[1]
-  cc.num <- length(cc)
 
   X1bar <- rowMeans(X1)
   X1barbar <- mean(X1bar)
@@ -362,27 +362,39 @@ Ph2XBAR <- function(
     lower.limits <- rep(NA, 2)
     upper.limits <- lower.limits
 
-    cc[1] <- getCC.CUC(
-              ARL0 = CUC.ARL0,
-              interval = CUC.interval,
-              m = m,
-              nu = nu,
-              ubCons = ubCons,
-              tol = CUC.tol,
-              maxIter = CUC.maxIter
-            )
+    if (which(cc.option == 'CUC') > 0) {
 
-    cc[2] <- getCC.EPC(
-              p0 = EPC.p0,
-              interval = EPC.interval,
-              ARL0 = EPC.ARL0,
-              epstilda = EPC.epstilda,
-              m = m,
-              nu = nu,
-              ubCons = ubCons
-            )
+      cc[1] <- getCC.CUC(
+                ARL0 = CUC.ARL0,
+                interval = CUC.interval,
+                m = m,
+                nu = nu,
+                ubCons = ubCons,
+                tol = CUC.tol,
+                maxIter = CUC.maxIter
+              )
+
+    }
+
+    if (which(cc.option == 'EPC') > 0) {
+
+      cc[2] <- getCC.EPC(
+                p0 = EPC.p0,
+                interval = EPC.interval,
+                ARL0 = EPC.ARL0,
+                epstilda = EPC.epstilda,
+                m = m,
+                nu = nu,
+                ubCons = ubCons
+              )
+
+    }
 
   }
+
+  cc <- cc[!is.na(cc)]
+
+  cc.num <- length(cc)
 
   lower.limits <- X1barbar - cc * sqrt(X1Var) / ubCons
   upper.limits <- X1barbar + cc * sqrt(X1Var) / ubCons
@@ -413,5 +425,6 @@ Ph2XBAR <- function(
             UCL = upper.limits,
             CS = X2bar)
 
+  return(out)
 
 }
