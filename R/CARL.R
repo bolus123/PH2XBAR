@@ -1,9 +1,33 @@
-library(microbenchmark)
-library(pracma)
-#library(invgamma)
-
 c4.f <- function(nu) sqrt(2 / (nu)) / beta((nu) / 2, 1 / 2) * sqrt(pi)
 
+CFAR <- function(u, v, cc, m, nu, ubCons) {
+
+  Z <- qnorm(u)
+  Y <- qchisq(v, nu)
+
+  mu <- Z / sqrt(m)
+  std <- sqrt(Y / nu)
+
+  1 - pnorm(mu + cc / ubCons * std) + pnorm(mu - cc / ubCons * std)
+
+}
+
+MomCARLin <- function(order, cc, m, nu, ubCons = c4.f(nu), reltol = 1e-3) {
+
+  integrand <- function(u, v, order, cc, mm, nu, ubCons) {
+
+    (1 / CFAR(u = u, v = v, cc = cc, m = mm, nu = nu, ubCons = ubCons)) ^ order
+
+  }
+
+  ####integrand <- Vectorize(integrand, c('u', 'v'))
+
+  integral2(fun = integrand, xmin = 0, xmax = 1, ymin = 0, ymax = 1,
+            order = order, cc = cc, mm = m, nu = nu, ubCons = ubCons,
+            reltol = reltol, singular = FALSE, vectorize = FALSE)$Q
+
+
+}
 
 pCARLin <- function(q, cc, m, nu, ubCons = c4.f(nu)) {
 
@@ -59,6 +83,7 @@ dqCARLin <- function(q, cc, m, nu, ubCons = c4.f(nu)) {
   integrate(intgrand, 0, 1, q = q, cc = cc, m = m, nu = nu, ubCons = ubCons)$value
 
 }
+
 
 bisectCARLin <- function(p, cc, m, nu, ubCons = c4.f(nu),
                          tol = 1e-2, maxIter = 10000, initMinq = 1, initMaxq = 10000, division = 100, lambda = 10) {
@@ -229,9 +254,6 @@ qCARLin <- function(p, cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
 qCARLin <- Vectorize(qCARLin, 'p')
 
 
-#qCARLin(p = 0.0001, cc = 3.9868, m = 25, nu = 24)
-
-
 expCARLin <- function(cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
                       method = c('secant', 'Newton'), initMethod = 'zeroZ', initMaxq = 10000, division = 10, lambda = 10) {
 
@@ -258,10 +280,6 @@ expCARLin <- function(cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
 
 }
 
-#expCARLin(cc = 3, m = 25, nu = 100)
-
-#undebug(qCARLin)
-#qCARLin(p = 0.00001, cc = 3, m = 25, nu = 100)
 
 getCCCUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
 
@@ -280,7 +298,6 @@ getCCCUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol =
 
 }
 
-#getCCCUC(ARL0 = 30, interval = c(1.5, 2.5), m = 82, nu = 81)
 
 getCCEPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = c4.f(nu)) {
 
@@ -301,4 +318,100 @@ getCCEPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = c4.
 
 }
 
-getCCEPC(p0 = 0.1, interval = c(1, 7), ARL0 = 370, epstilda = 0, m = 50, nu = 49)
+
+Ph2XBAR <- function(
+  X2,
+  X1,
+  cc = NULL,
+  ubCons.option = TRUE,
+  plot.option = TRUE,
+  CUC.ARL0 = 370,
+  CUC.interval = c(1, 3.1),
+  CUC.tol = 1e-2,
+  CUC.maxIter = 1000,
+  EPC.p0 = 0.05,
+  EPC.interval = c(1, 7),
+  EPC.ARL0 = 370,
+  EPC.epstilda = 0) {
+
+  m <- dim(X1)[1]
+  nu <- m - 1
+  if (ubCons.option == TRUE) {
+
+    ubCons = c4.f(nu)
+
+  } else {
+
+    ubCons = 1
+
+  }
+
+  m2 <- dim(X2)[1]
+  cc.num <- length(cc)
+
+  X1bar <- rowMeans(X1)
+  X1barbar <- mean(X1bar)
+  X1Var <- var(X1bar)
+
+  X2bar <- rowMeans(X2)
+
+  if (is.null(cc)) {
+
+    cc <- rep(NA, 2)
+
+    lower.limits <- rep(NA, 2)
+    upper.limits <- lower.limits
+
+    cc[1] <- getCCCUC(
+              ARL0 = CUC.ARL0,
+              interval = CUC.interval,
+              m = m,
+              nu = nu,
+              ubCons = ubCons,
+              tol = CUC.tol,
+              maxIter = CUC.maxIter
+            )
+
+    cc[2] <- getCCEPC(
+              p0 = EPC.p0,
+              interval = EPC.interval,
+              ARL0 = EPC.ARL0,
+              epstilda = EPC.epstilda,
+              m = m,
+              nu = nu,
+              ubCons = ubCons
+            )
+
+  }
+
+  lower.limits <- X1barbar - cc * sqrt(X1Var) / ubCons
+  upper.limits <- X1barbar + cc * sqrt(X1Var) / ubCons
+
+  if (plot.option == TRUE) {
+
+    plot(c(1, m2), c(min(X2bar, lower.limits), max(X2bar, upper.limits)), type = 'n',
+          xlab = 'Subgroup', ylab = 'Sample Mean')
+    points(1:m2, X2bar, type = 'o', lty = 1)
+
+    for (i in 1:cc.num) {
+
+      abline(h = lower.limits[i], lty = i)
+      text(round(m2 * 0.8), lower.limits[i], paste('UCL', i, ' = ', round(lower.limits[i], 4)), pos = 3)
+
+      abline(h = upper.limits[i], lty = i)
+      text(round(m2 * 0.8), upper.limits[i], paste('UCL', i, ' = ', round(upper.limits[i], 4)), pos = 1)
+
+    }
+
+  }
+
+  out <- list(
+            CL = X1barbar,
+            sigma = sqrt(X1Var) / ubCons,
+            PH2.cc = cc,
+            LCL = lower.limits,
+            UCL = upper.limits,
+            CS = X2bar)
+
+
+}
