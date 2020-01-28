@@ -318,22 +318,63 @@ getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = c4
 
 }
 
+getCC <- function(
+          m,
+          nu,
+          ARL0 = 370,
+          interval = c(1, 4),
+          CUC.tol = 1e-2,
+          CUC.maxIter = 1000,
+          EPC.p0 = 0.05,
+          EPC.epstilda = 0,
+          cc.option = c('EPC'),
+          ubCons = c4.f(nu)) {
+
+
+  if (cc.option == 'CUC') {
+
+    cc <- getCC.CUC(
+      ARL0 = ARL0,
+      interval = interval,
+      m = m,
+      nu = nu,
+      ubCons = ubCons,
+      tol = CUC.tol,
+      maxIter = CUC.maxIter
+    )
+
+  } else if (cc.option == 'EPC') {
+
+    cc <- getCC.EPC(
+      p0 = EPC.p0,
+      interval = interval,
+      ARL0 = ARL0,
+      epstilda = EPC.epstilda,
+      m = m,
+      nu = nu,
+      ubCons = ubCons
+    )
+  }
+
+  return(cc)
+
+}
+
+
 
 Ph2XBAR <- function(
   X2,
   X1,
   cc = NULL,
-  cc.option = c('EPC', 'CUC'),
-  ubCons.option = TRUE,
-  plot.option = TRUE,
-  CUC.ARL0 = 370,
-  CUC.interval = c(1, 3.1),
+  ARL0 = 370,
+  interval = c(1, 4),
   CUC.tol = 1e-2,
   CUC.maxIter = 1000,
   EPC.p0 = 0.05,
-  EPC.interval = c(1, 7),
-  EPC.ARL0 = 370,
-  EPC.epstilda = 0) {
+  EPC.epstilda = 0,
+  cc.option = c('EPC', 'CUC'),
+  ubCons.option = TRUE,
+  plot.option = TRUE) {
 
   m <- dim(X1)[1]
   nu <- m - 1
@@ -365,8 +406,8 @@ Ph2XBAR <- function(
     if (which(cc.option == 'CUC') > 0) {
 
       cc[1] <- getCC.CUC(
-                ARL0 = CUC.ARL0,
-                interval = CUC.interval,
+                ARL0 = ARL0,
+                interval = interval,
                 m = m,
                 nu = nu,
                 ubCons = ubCons,
@@ -380,8 +421,8 @@ Ph2XBAR <- function(
 
       cc[2] <- getCC.EPC(
                 p0 = EPC.p0,
-                interval = EPC.interval,
-                ARL0 = EPC.ARL0,
+                interval = interval,
+                ARL0 = ARL0,
                 epstilda = EPC.epstilda,
                 m = m,
                 nu = nu,
@@ -408,7 +449,7 @@ Ph2XBAR <- function(
     for (i in 1:cc.num) {
 
       abline(h = lower.limits[i], lty = i)
-      text(round(m2 * 0.8), lower.limits[i], paste('UCL', i, ' = ', round(lower.limits[i], 4)), pos = 3)
+      text(round(m2 * 0.8), lower.limits[i], paste('LCL', i, ' = ', round(lower.limits[i], 4)), pos = 3)
 
       abline(h = upper.limits[i], lty = i)
       text(round(m2 * 0.8), upper.limits[i], paste('UCL', i, ' = ', round(upper.limits[i], 4)), pos = 1)
