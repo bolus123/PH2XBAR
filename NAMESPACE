@@ -1,1 +1,11 @@
-exportPattern("^[[:alpha:]]+")
+import('pracma')
+
+importFrom("stats", "dchisq", "pnorm", "qchisq", "qnorm", "runif")
+importFrom("graphics", "axis", "plot", "points", "text")
+importFrom("stats", "var")
+importFrom("stats", "dnorm", "integrate", "rchisq", "uniroot")
+
+
+export('getCC.CUC')
+export('getCC.EPC')
+export('PH2XBAR')
