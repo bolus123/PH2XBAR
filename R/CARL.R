@@ -281,7 +281,7 @@ expCARLin <- function(cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
 }
 
 
-getCCCUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
+getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
 
   root.finding <- function(cc, ARL0, mm, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
 
@@ -299,7 +299,7 @@ getCCCUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol =
 }
 
 
-getCCEPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = c4.f(nu)) {
+getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = c4.f(nu)) {
 
   root.finding <- function(cc, p0, ARL0, epstilda, mm, nu,
                            ubCons = c4.f(nu)) {
@@ -362,7 +362,7 @@ Ph2XBAR <- function(
     lower.limits <- rep(NA, 2)
     upper.limits <- lower.limits
 
-    cc[1] <- getCCCUC(
+    cc[1] <- getCC.CUC(
               ARL0 = CUC.ARL0,
               interval = CUC.interval,
               m = m,
@@ -372,7 +372,7 @@ Ph2XBAR <- function(
               maxIter = CUC.maxIter
             )
 
-    cc[2] <- getCCEPC(
+    cc[2] <- getCC.EPC(
               p0 = EPC.p0,
               interval = EPC.interval,
               ARL0 = EPC.ARL0,
