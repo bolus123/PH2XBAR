@@ -1,6 +1,6 @@
 \name{getCC}
 \alias{getCC}
-\title{get Phase II corrected charting constant using the CUC or EPC method}
+\title{Get Phase II corrected charting constant using the CUC or EPC method}
  \usage{
 getCC(
 	m,

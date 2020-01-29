@@ -1,6 +1,6 @@
 \name{getCC.CUC}
 \alias{getCC.CUC}
-\title{get Phase II corrected charting constant using the CUC method}
+\title{Get Phase II corrected charting constant using the CUC method}
  \usage{
 getCC.CUC(
 	ARL0, 
