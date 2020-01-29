@@ -23,7 +23,7 @@ PH2XBAR(
   \item{ARL0}{ the nominal value of average run length }
   \item{interval}{ the searching range of charting constants.  The default setting is between 1 and 4. }
   \item{CUC.tol}{ tolerance level for the expectation of the conditional average run length for the CUC method.  The default setting is 1e-2. }
-  \item{CUC.maxiter}{ maximum iteration of computation for the CUC method.  The default setting is 1000. }
+  \item{CUC.maxIter}{ maximum iteration of computation for the CUC method.  The default setting is 1000. }
   \item{EPC.p0}{ the nominal value of probability for the EPC method.  It is not recommended using values greater than 0.5.  The default setting is 0.05 }
   \item{EPC.epstilda}{ the nominal value of tolerance factor for the EPC method.  The default setting is 0.}
   \item{cc.option}{ the computational option for the charting constant.  The default setting is both the CUC and EPC methods. }
@@ -37,14 +37,14 @@ Build a Phase II Shewhart X-bar control chart.
 %\dontrun{
 # Build a Phase II basic Shewhart control chart
 
-Ph1data <- data(Ph1data)
-Ph2data <- data(Ph2data)
+data(Ph1data)
+data(Ph2data)
 
 X1 <- as.matrix(Ph1data[, 2:4]) ^ (1/3)
 X2 <- as.matrix(Ph2data[, 2:4]) ^ (1/3)
 X2[which(is.na(X2))] <- mean(X1)
 
-Ph2XBAR(
+PH2XBAR(
   X2 = X2,
   X1 = X1,
   cc = NULL,

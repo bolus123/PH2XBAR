@@ -9,7 +9,7 @@ getCC.EPC(
 	epstilda, 
 	m, 
 	nu, 
-	ubCons = c4.f(nu)
+	ubCons = 1
 )
 }
 \arguments{
@@ -19,7 +19,7 @@ getCC.EPC(
   \item{epstilda}{ the nominal value of tolerance factor }
   \item{m}{ number of subgroups }
   \item{nu}{ degrees of freedom }
-  \item{ubCons}{ the unbiasing constant.  The default setting is c4. }
+  \item{ubCons}{ the unbiasing constant.  The default setting is 1. }
   
 }
 \description{
@@ -28,7 +28,9 @@ Obtain a corrected charting constant using the EPC method
 \examples{
 %\dontrun{
 
-getCC.EPC(p0 = 0.05, interval = c(1, 7), ARL0 = 370, epstilda = 0, m = 50, nu = 49) 
+ub <- c4.f(49)
+
+getCC.EPC(p0 = 0.05, interval = c(1, 7), ARL0 = 370, epstilda = 0, m = 50, nu = 49, ubCons = ub) 
 
 %}
 }

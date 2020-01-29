@@ -1,12 +1,13 @@
 import('pracma')
 
 importFrom("stats", "dchisq", "qchisq", "pchisq", "dnorm", "pnorm", "qnorm")
-importFrom("graphics", "axis", "plot", "points", "text")
+importFrom("graphics", "axis", "plot", "points", "text", 'abline')
 importFrom("stats", "var")
 importFrom("stats", "integrate", "uniroot")
-
+importFrom("utils", "tail", "globalVariables")
 
 export('getCC.CUC')
 export('getCC.EPC')
 export('getCC')
 export('PH2XBAR')
+export('c4.f')

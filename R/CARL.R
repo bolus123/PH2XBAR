@@ -1,5 +1,3 @@
-c4.f <- function(nu) sqrt(2 / (nu)) / beta((nu) / 2, 1 / 2) * sqrt(pi)
-
 CFAR <- function(u, v, cc, m, nu, ubCons) {
 
   Z <- qnorm(u)
@@ -12,7 +10,7 @@ CFAR <- function(u, v, cc, m, nu, ubCons) {
 
 }
 
-MomCARLin <- function(order, cc, m, nu, ubCons = c4.f(nu), reltol = 1e-3) {
+MomCARLin <- function(order, cc, m, nu, ubCons = 1, reltol = 1e-3) {
 
   integrand <- function(u, v, order, cc, mm, nu, ubCons) {
 
@@ -24,12 +22,12 @@ MomCARLin <- function(order, cc, m, nu, ubCons = c4.f(nu), reltol = 1e-3) {
 
   integral2(fun = integrand, xmin = 0, xmax = 1, ymin = 0, ymax = 1,
             order = order, cc = cc, mm = m, nu = nu, ubCons = ubCons,
-            reltol = reltol, singular = FALSE, vectorize = FALSE)$Q
+            reltol = reltol, singular = FALSE, vectorized = FALSE)$Q
 
 
 }
 
-pCARLin <- function(q, cc, m, nu, ubCons = c4.f(nu)) {
+pCARLin <- function(q, cc, m, nu, ubCons = 1) {
 
   integrand <- function(u, q, cc, m, nu, ubCons){
 
@@ -66,7 +64,7 @@ pCARLin <- function(q, cc, m, nu, ubCons = c4.f(nu)) {
 
 pCARLin <- Vectorize(pCARLin, 'q')
 
-dqCARLin <- function(q, cc, m, nu, ubCons = c4.f(nu)) {
+dqCARLin <- function(q, cc, m, nu, ubCons = 1) {
 
   intgrand <- function(u, q, cc, m, nu, ubCons) {
 
@@ -85,7 +83,7 @@ dqCARLin <- function(q, cc, m, nu, ubCons = c4.f(nu)) {
 }
 
 
-bisectCARLin <- function(p, cc, m, nu, ubCons = c4.f(nu),
+bisectCARLin <- function(p, cc, m, nu, ubCons = 1,
                          tol = 1e-2, maxIter = 10000, initMinq = 1, initMaxq = 10000, division = 100, lambda = 10) {
 
   flg <- 0
@@ -147,7 +145,7 @@ bisectCARLin <- function(p, cc, m, nu, ubCons = c4.f(nu),
 }
 
 
-qCARLin <- function(p, cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
+qCARLin <- function(p, cc, m, nu, ubCons = 1, tol = 1e-2, maxIter = 1000,
                     method = c('secant', 'Newton'), initMethod = NULL, initMaxq = 10000, division = 10, lambda = 10, bitol = tol) {
 
 
@@ -254,7 +252,7 @@ qCARLin <- function(p, cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
 qCARLin <- Vectorize(qCARLin, 'p')
 
 
-expCARLin <- function(cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
+expCARLin <- function(cc, m, nu, ubCons = 1, tol = 1e-2, maxIter = 1000,
                       method = c('secant', 'Newton'), initMethod = 'zeroZ', initMaxq = 10000, division = 10, lambda = 10) {
 
   out <- try(integrate(qCARLin, 0, 1, cc = cc, m = m, nu = nu, ubCons = ubCons, tol = tol, maxIter = maxIter,
@@ -281,7 +279,7 @@ expCARLin <- function(cc, m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000,
 }
 
 
-getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
+getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = 1, tol = 1e-2, maxIter = 1000) {
 
   root.finding <- function(cc, ARL0, mm, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
 
@@ -299,7 +297,7 @@ getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = c4.f(nu), tol 
 }
 
 
-getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = c4.f(nu)) {
+getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = 1) {
 
   root.finding <- function(cc, p0, ARL0, epstilda, mm, nu,
                            ubCons = c4.f(nu)) {
@@ -328,7 +326,7 @@ getCC <- function(
           EPC.p0 = 0.05,
           EPC.epstilda = 0,
           cc.option = c('EPC'),
-          ubCons = c4.f(nu)) {
+          ubCons = 1) {
 
 
   if (cc.option == 'CUC') {
@@ -362,7 +360,7 @@ getCC <- function(
 
 
 
-Ph2XBAR <- function(
+PH2XBAR <- function(
   X2,
   X1,
   cc = NULL,

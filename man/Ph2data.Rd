@@ -7,7 +7,7 @@
    \item{Year}{The year of snowfall season}
    \item{Jan}{The snowfall in January}
    \item{Feb}{The snowfall in Feburary}
-   \item{March}{The snowfall in March}
+   \item{Mar}{The snowfall in March}
 }}
 \usage{
 diamonds

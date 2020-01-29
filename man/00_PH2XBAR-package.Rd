@@ -31,14 +31,14 @@ Yao Y, Chakraborti S. xxx
 
 # Build a Phase II basic Shewhart control chart
 
-Ph1data <- data(Ph1data)
-Ph2data <- data(Ph2data)
+data(Ph1data)
+data(Ph2data)
 
 X1 <- as.matrix(Ph1data[, 2:4]) ^ (1/3)
 X2 <- as.matrix(Ph2data[, 2:4]) ^ (1/3)
 X2[which(is.na(X2))] <- mean(X1)
 
-Ph2XBAR(
+PH2XBAR(
   X2 = X2,
   X1 = X1,
   cc = NULL,
