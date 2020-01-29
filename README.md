@@ -38,6 +38,9 @@ PH2XBAR(X2 = X2, X1 = X1)
 Also, PH2XBAR provides a function to get the corrected charting constant using the CUC or the EPC method as follows
 
 ``` r
+
+ub <- c4.f(49)
+
 # get the charting constant using the CUC method
 getCC(m = 50, nu = 49, cc.option = 'CUC', ubCons = ub)
 
