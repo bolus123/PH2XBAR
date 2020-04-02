@@ -279,7 +279,7 @@ expCARLin <- function(cc, m, nu, ubCons = 1, tol = 1e-2, maxIter = 1000,
 }
 
 
-getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = 1, tol = 1e-2, maxIter = 1000) {
+getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = 1, tol = 1e-2, maxIter = 1000, apprx = FALSE) {
 
   root.finding <- function(cc, ARL0, mm, nu, ubCons = c4.f(nu), tol = 1e-2, maxIter = 1000) {
 
@@ -291,13 +291,26 @@ getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = 1, tol = 1e-2,
 
   }
 
-  uniroot(root.finding, interval = interval, ARL0 = ARL0, mm = m, nu = nu,
-          ubCons = ubCons, tol = tol, maxIter = maxIter)$root
+  if (apprx == TRUE) {
+  
+    cc <- qnorm(1 - 1 / 2 / ARL0)
+	A <- cc ^ 2 * (ubCons ^ (-2) - 1)
+	
+	First <- (dnorm(cc) / 2 / (1 - pnorm(cc)) - cc / 2) * (A + m ^ (-1))
+	Second <- dnorm(cc) / 2 / (1 - pnorm(cc)) * (A - m ^ (-1))
+	
+	cc - (First + Second)
+  
+  } else {
 
+	uniroot(root.finding, interval = interval, ARL0 = ARL0, mm = m, nu = nu,
+          ubCons = ubCons, tol = tol, maxIter = maxIter)$root
+  }
+  
 }
 
 
-getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = 1) {
+getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = 1, apprx = FALSE) {
 
   root.finding <- function(cc, p0, ARL0, epstilda, mm, nu,
                            ubCons = c4.f(nu)) {
@@ -310,8 +323,16 @@ getCC.EPC <- function(p0, interval = c(1, 7), ARL0, epstilda, m, nu, ubCons = 1)
 
   }
 
-  uniroot(root.finding, interval = interval, p0 = p0, ARL0 = ARL0, epstilda = epstilda,
+  if (apprx == TRUE) {
+  
+    ubCons * sqrt((m - 1) * (m + 1) / m * qchisq(1 - 1 / (1 - epstilda) / ARL0, 1) / qchisq(p0, m - 1))
+  
+  } else {
+
+	uniroot(root.finding, interval = interval, p0 = p0, ARL0 = ARL0, epstilda = epstilda,
           mm = m, nu = nu, ubCons = ubCons)$root
+		  
+  }
 
 
 }
@@ -326,7 +347,8 @@ getCC <- function(
           EPC.p0 = 0.05,
           EPC.epstilda = 0,
           cc.option = c('EPC'),
-          ubCons = 1) {
+          ubCons = 1, 
+		  apprx = FALSE) {
 
 
   if (cc.option == 'CUC') {
@@ -338,7 +360,8 @@ getCC <- function(
       nu = nu,
       ubCons = ubCons,
       tol = CUC.tol,
-      maxIter = CUC.maxIter
+      maxIter = CUC.maxIter,
+	  apprx = apprx
     )
 
   } else if (cc.option == 'EPC') {
@@ -350,7 +373,8 @@ getCC <- function(
       epstilda = EPC.epstilda,
       m = m,
       nu = nu,
-      ubCons = ubCons
+      ubCons = ubCons,
+	  apprx = apprx
     )
   }
 
@@ -371,6 +395,7 @@ PH2XBAR <- function(
   EPC.p0 = 0.05,
   EPC.epstilda = 0,
   cc.option = c('EPC', 'CUC'),
+  apprx = FALSE,
   ubCons.option = TRUE,
   plot.option = TRUE) {
 
@@ -410,7 +435,8 @@ PH2XBAR <- function(
                 nu = nu,
                 ubCons = ubCons,
                 tol = CUC.tol,
-                maxIter = CUC.maxIter
+                maxIter = CUC.maxIter,
+				apprx = apprx
               )
 
     }
@@ -424,7 +450,8 @@ PH2XBAR <- function(
                 epstilda = EPC.epstilda,
                 m = m,
                 nu = nu,
-                ubCons = ubCons
+                ubCons = ubCons,
+				apprx = apprx
               )
 
     }
