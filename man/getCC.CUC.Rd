@@ -9,7 +9,8 @@ getCC.CUC(
 	nu, 
 	ubCons = 1, 
 	tol = 1e-2, 
-	maxIter = 1000)
+	maxIter = 1000,
+	apprx = FALSE)
 }
 \arguments{
   \item{ARL0}{ the nominal value of average run length }
@@ -19,7 +20,7 @@ getCC.CUC(
   \item{ubCons}{ the unbiasing constant.  The default setting is 1. }
   \item{tol}{ tolerance level for the expectation of the conditional average run length.  The default setting is 1e-2. }
   \item{maxIter}{ maximum iteration of computation.  The default setting is 1000. }
-  
+  \item{apprx}{ a trigger asking where the approximation is engaged.  The default setting is FALSE. }
 }
 \description{
 Obtain a corrected charting constant using the CUC method
