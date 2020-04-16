@@ -12,7 +12,8 @@ getCC(
     EPC.p0 = 0.05,
     EPC.epstilda = 0,
     cc.option = c('EPC'),
-    ubCons = 1
+    ubCons = 1, 
+    apprx = FALSE
 )
 }
 \arguments{
@@ -26,7 +27,7 @@ getCC(
   \item{EPC.epstilda}{ the nominal value of tolerance factor for the EPC method.  The default setting is 0.}
   \item{cc.option}{ the charting constant option.  In the default setting, the charting constant is calculated using the EPC method}
   \item{ubCons}{ the unbiasing constant.  The default setting is 1. }
-  
+  \item{apprx}{ a trigger asking where the approximation is engaged.  The default setting is FALSE. }
 }
 \description{
 Obtain a corrected charting constant using the CUC or EPC method
