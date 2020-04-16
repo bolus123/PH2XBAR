@@ -9,7 +9,8 @@ getCC.EPC(
 	epstilda, 
 	m, 
 	nu, 
-	ubCons = 1
+	ubCons = 1,
+	apprx = FALSE
 )
 }
 \arguments{
@@ -20,7 +21,7 @@ getCC.EPC(
   \item{m}{ number of subgroups }
   \item{nu}{ degrees of freedom }
   \item{ubCons}{ the unbiasing constant.  The default setting is 1. }
-  
+  \item{apprx}{ a trigger asking where the approximation is engaged.  The default setting is FALSE. }
 }
 \description{
 Obtain a corrected charting constant using the EPC method
