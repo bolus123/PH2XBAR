@@ -1,9 +1,9 @@
 \name{getCC}
 \alias{getCC}
 \title{Get Phase II corrected charting constant using the CUC or EPC method}
- \usage{
+\usage{
 getCC(
-	m,
+    m,
     nu,
     ARL0 = 370,
     interval = c(1, 4),
