@@ -348,7 +348,7 @@ getCC <- function(
           EPC.epstilda = 0,
           cc.option = c('EPC'),
           ubCons = 1, 
-		  apprx = FALSE) {
+	  apprx = FALSE) {
 
 
   if (cc.option == 'CUC') {
@@ -374,7 +374,7 @@ getCC <- function(
       m = m,
       nu = nu,
       ubCons = ubCons,
-	  apprx = apprx
+      apprx = apprx
     )
   }
 
@@ -436,7 +436,7 @@ PH2XBAR <- function(
                 ubCons = ubCons,
                 tol = CUC.tol,
                 maxIter = CUC.maxIter,
-				apprx = apprx
+		apprx = apprx
               )
 
     }
@@ -451,7 +451,7 @@ PH2XBAR <- function(
                 m = m,
                 nu = nu,
                 ubCons = ubCons,
-				apprx = apprx
+		apprx = apprx
               )
 
     }
