@@ -285,7 +285,7 @@ getCC.CUC <- function(ARL0, interval = c(1, 3.1), m, nu, ubCons = 1, tol = 1e-2,
 
     ECARLin <- expCARLin(cc = cc, m = mm, nu = nu, ubCons = ubCons, tol = tol, maxIter = maxIter)
 
-    cat('cc:', cc, 'and ECARLin:', ECARLin, '\n')
+    cat('cc:', cc, 'and ARLin:', ECARLin, '\n')
 
     ARL0 - ECARLin
 
