@@ -26,7 +26,10 @@ PH2XBAR provides a function to build Phase II X-bar chart with variance componen
 
 ``` r
 data(Ph1data)
+# Phase I sample
+
 data(Ph2data)
+# Phase II data
 
 X1 <- as.matrix(Ph1data[, 2:4]) ^ (1/3)
 X2 <- as.matrix(Ph2data[, 2:4]) ^ (1/3)
