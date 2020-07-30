@@ -426,7 +426,7 @@ PH2XBAR <- function(
     lower.limits <- rep(NA, 2)
     upper.limits <- lower.limits
 
-    if (which(cc.option == 'CUC') > 0) {
+    if (length(which(cc.option == 'CUC')) > 0) {
 
       cc[1] <- getCC.CUC(
                 ARL0 = ARL0,
@@ -441,7 +441,7 @@ PH2XBAR <- function(
 
     }
 
-    if (which(cc.option == 'EPC') > 0) {
+    if (length(which(cc.option == 'EPC')) > 0) {
 
       cc[2] <- getCC.EPC(
                 p0 = EPC.p0,
