@@ -9,9 +9,6 @@
    \item{Feb}{The snowfall in Feburary}
    \item{Mar}{The snowfall in March}
 }}
-\usage{
-diamonds
-}
 \description{
 A dataset containing the measurement of snowfall in inches for the Phase I process. The variables are as follows:
 }
