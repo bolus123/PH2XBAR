@@ -397,7 +397,8 @@ PH2XBAR <- function(
   cc.option = c('EPC', 'CUC'),
   apprx = FALSE,
   ubCons.option = TRUE,
-  plot.option = TRUE) {
+  plot.option = TRUE) 
+{
 
   m <- dim(X1)[1]
   nu <- m - 1
@@ -422,7 +423,9 @@ PH2XBAR <- function(
   if (is.null(cc)) {
 
     cc <- rep(NA, 2)
-
+    txt1 <- rep(NA, 2)
+	txt2 <- rep(NA, 2)
+	
     lower.limits <- rep(NA, 2)
     upper.limits <- lower.limits
 
@@ -436,8 +439,11 @@ PH2XBAR <- function(
                 ubCons = ubCons,
                 tol = CUC.tol,
                 maxIter = CUC.maxIter,
-		apprx = apprx
+				apprx = apprx
               )
+			  
+	   txt1[1] <- 'CUC'
+	   txt2[1] <- 'CUC'
 
     }
 
@@ -451,11 +457,24 @@ PH2XBAR <- function(
                 m = m,
                 nu = nu,
                 ubCons = ubCons,
-		apprx = apprx
+				apprx = apprx
               )
+			  
+	  txt1[2] <- 'EPC'
+	  txt2[2] <- 'EPC'
+    
+	}
 
-    }
-
+  } else {
+  
+		cc.num <- length(cc)
+		txt1 <- rep(NA, cc.num)
+		txt2 <- rep(NA, cc.num)
+		
+		for (i in 1:cc.num) {
+			txt1[i] <- paste('LCL', i, sep = '')
+			txt2[i] <- paste('UCL', i, sep = '')
+		}
   }
 
   cc <- cc[!is.na(cc)]
@@ -474,10 +493,10 @@ PH2XBAR <- function(
     for (i in 1:cc.num) {
 
       abline(h = lower.limits[i], lty = i)
-      text(round(m2 * 0.8), lower.limits[i], paste('LCL', i, ' = ', round(lower.limits[i], 4)), pos = 3)
+      text(round(m2 * 0.8), lower.limits[i], paste(txt1[i], ' = ', round(lower.limits[i], 4)), pos = 3)
 
       abline(h = upper.limits[i], lty = i)
-      text(round(m2 * 0.8), upper.limits[i], paste('UCL', i, ' = ', round(upper.limits[i], 4)), pos = 1)
+      text(round(m2 * 0.8), upper.limits[i], paste(txt1[i], ' = ', round(upper.limits[i], 4)), pos = 1)
 
     }
 
