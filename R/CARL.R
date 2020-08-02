@@ -424,7 +424,7 @@ PH2XBAR <- function(
 
     cc <- rep(NA, 2)
     txt1 <- rep(NA, 2)
-	txt2 <- rep(NA, 2)
+    txt2 <- rep(NA, 2)
 	
     lower.limits <- rep(NA, 2)
     upper.limits <- lower.limits
@@ -496,7 +496,7 @@ PH2XBAR <- function(
       text(round(m2 * 0.8), lower.limits[i], paste(txt1[i], ' = ', round(lower.limits[i], 4)), pos = 3)
 
       abline(h = upper.limits[i], lty = i)
-      text(round(m2 * 0.8), upper.limits[i], paste(txt1[i], ' = ', round(upper.limits[i], 4)), pos = 1)
+      text(round(m2 * 0.8), upper.limits[i], paste(txt2[i], ' = ', round(upper.limits[i], 4)), pos = 1)
 
     }
 
